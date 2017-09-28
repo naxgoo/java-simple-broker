@@ -5,10 +5,12 @@ public class Consumer {
     public static void main(String[] args) {
         try {
             Socket socket;
+
             while (true){
-                socket = new Socket("127.0.0.1", 14141);
 
                 Thread.sleep(1000);
+
+                socket = new Socket("127.0.0.1", 14141);
 
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 out.writeUTF("take");
