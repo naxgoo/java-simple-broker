@@ -1,8 +1,5 @@
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import jdk.nashorn.internal.parser.JSONParser;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,18 +13,15 @@ public class Broker {
         BlockingQueue msgQueue = new LinkedBlockingDeque();
         String msg;
         JsonArray backupMsg = new JsonArray();
-        File file = new File("queue.json");
         JsonParser parser = new JsonParser();
 
 
         try {
             serverSocket = new ServerSocket(14141);
             System.out.println("Server socket created!");
-            if(file.exists()){
-                backupMsg = (JsonArray) parser.parse(new FileReader("queue.json"));
-                for (int i = 0; i < backupMsg.size(); i++) {
-                    msgQueue.add(backupMsg.get(i));
-                }
+            backupMsg = (JsonArray) parser.parse(new FileReader("queue.json"));
+            for (int i = 0; i < backupMsg.size(); i++) {
+                msgQueue.add(backupMsg.get(i).getAsString());
             }
         } catch (IOException e) {
             e.printStackTrace();

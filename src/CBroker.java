@@ -17,12 +17,15 @@ public class CBroker extends Thread {
 
     public void run(){
         try {
+
             String msg = msgQueue.take().toString();
             System.out.println("Sending <<" + msg + ">> to consumer!");
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF(msg);
             backupMsg.remove(0);
-            //System.out.println("This is consumer's thread: " + Thread.currentThread().getId());
+            FileWriter file = new FileWriter("queue.json");
+            file.write(backupMsg.toString());
+            file.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
