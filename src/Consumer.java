@@ -3,6 +3,7 @@ import java.net.Socket;
 
 public class Consumer {
     public static void main(String[] args) {
+
         try {
             Socket socket;
 
@@ -13,7 +14,7 @@ public class Consumer {
                 socket = new Socket("127.0.0.1", 14141);
 
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                out.writeUTF("take");
+                out.writeUTF("2.");
 
                 InputStream inSocket = socket.getInputStream();
                 DataInputStream in = new DataInputStream(inSocket);

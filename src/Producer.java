@@ -16,10 +16,8 @@ public class Producer {
                 socket = new Socket("127.0.0.1", 14141);
 
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                out.writeUTF("put");
-
                 int number = new Random().nextInt(100);
-                out.writeUTF(String.valueOf(number));
+                out.writeUTF("1." + String.valueOf(number));
                 System.out.println("Produced: " + number);
 
                 Thread.sleep(1000);

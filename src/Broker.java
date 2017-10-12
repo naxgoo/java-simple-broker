@@ -33,9 +33,9 @@ public class Broker {
                     socket = serverSocket.accept();
                     DataInputStream in = new DataInputStream(socket.getInputStream());
                     msg = in.readUTF();
-                    if (msg.equals("put")){
-                        new Thread(new PBroker(socket, msgQueue, backupMsg)).start();
-                    } else if (msg.equals("take")) {
+                    if (msg.startsWith("1")){
+                        new Thread(new PBroker(socket, msgQueue, backupMsg, msg.substring(2))).start();
+                    } else if (msg.startsWith("2")) {
                         new Thread(new CBroker(socket, msgQueue, backupMsg)).start();
                     } else {
                         System.out.println("Idk what is that. Pls try again!");

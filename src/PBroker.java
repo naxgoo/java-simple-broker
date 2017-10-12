@@ -1,6 +1,4 @@
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import java.io.DataInputStream;
@@ -13,18 +11,19 @@ public class PBroker extends Thread{
     private BlockingQueue msgQueue;
     private Socket socket;
     private JsonArray backupMsg;
+    private String msg;
 
 
-    public PBroker(Socket socket, BlockingQueue msgQueue, JsonArray backupMsg){
+    public PBroker(Socket socket, BlockingQueue msgQueue, JsonArray backupMsg, String msg){
         this.msgQueue = msgQueue;
         this.socket = socket;
         this.backupMsg = backupMsg;
+        this.msg = msg;
     }
 
     public void run(){
         try {
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            String msg = in.readUTF();
             System.out.println("Got message <<" + msg + ">>. Sending it to queue.");
             msgQueue.put(msg);
             backupMsg.add(new JsonPrimitive(msg));
