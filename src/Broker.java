@@ -10,6 +10,7 @@ public class Broker {
     public static void main(String[] args) {
         ServerSocket serverSocket = null;
         Socket socket;
+        BufferedReader in = null;
         BlockingQueue msgQueue = new LinkedBlockingDeque();
         String msg;
         JsonArray backupMsg = new JsonArray();
@@ -23,28 +24,21 @@ public class Broker {
             for (int i = 0; i < backupMsg.size(); i++) {
                 msgQueue.add(backupMsg.get(i).getAsString());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        while (true){
-            try{
-                if (serverSocket != null) {
-                    socket = serverSocket.accept();
-                    DataInputStream in = new DataInputStream(socket.getInputStream());
-                    msg = in.readUTF();
-                    if (msg.startsWith("1")){
-                        new Thread(new PBroker(socket, msgQueue, backupMsg, msg.substring(2))).start();
-                    } else if (msg.startsWith("2")) {
-                        new Thread(new CBroker(socket, msgQueue, backupMsg)).start();
-                    } else {
-                        System.out.println("Idk what is that. Pls try again!");
-                    }
+            socket = serverSocket.accept();
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        while ((msg = in.readLine()) != null){
+            if (msg.startsWith("1")){
+                new Thread(new PBroker(socket, msgQueue, backupMsg, msg.substring(2))).start();
+            } else if (msg.startsWith("2")) {
+                new Thread(new CBroker(socket, msgQueue, backupMsg)).start();
+            } else {
+                System.out.println("Idk what is that. Pls try again!");
             }
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

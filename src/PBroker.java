@@ -23,16 +23,13 @@ public class PBroker extends Thread{
 
     public void run(){
         try {
-            DataInputStream in = new DataInputStream(socket.getInputStream());
             System.out.println("Got message <<" + msg + ">>. Sending it to queue.");
             msgQueue.put(msg);
             backupMsg.add(new JsonPrimitive(msg));
             FileWriter file = new FileWriter("queue.json");
             file.write(backupMsg.toString());
             file.flush();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
 
