@@ -7,10 +7,9 @@ The protocol for the system broker is based on simple serialization. broker expo
 
 Example of the structure for a notibroker message:
 
-"1.message" - sending a message to the broker
-
-"2" - seding a request to the broker
+    "1.message" - sending a message to the broker
+    "2" - seding a request to the broker
 
 The broker sends the message to the reciever in format:
 
-"message"
+    "message"
